@@ -120,7 +120,7 @@ RegisterNetEvent("qb-drugs:Server:handleDrugSales", function(canSell, drug, zone
     local hasDrugs = Player.Functions.GetItemByName(drug)
     if not drug or not canSell or not amount then DropPlayer(src, "[DRUGS] Detect an event being called without correct parms. This has been logged") return end 
     if hasDrugs and hasDrugs.amount > 0 then 
-        if chance >= Drugs.Selling[drug].callPoliceChance then 
+        if Drugs.Selling[drug].callPoliceChance >= chance then 
             Player.Functions.RemoveItem(drug, removeA)
             Player.Functions.AddMoney('cash', amount)
             TriggerClientEvent('QBCore:Notify', source, "You've successfully sold some " .. drug .. " for $" .. amount, "success")

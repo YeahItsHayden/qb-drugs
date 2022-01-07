@@ -20,3 +20,4 @@ lua54 'yes'
 -- More XP required to lvl up 
 -- Test Drug Sales
 -- Complete other drugs
+-- Meth Tables random chance to explode

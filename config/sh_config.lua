@@ -108,6 +108,12 @@ Drugs.Selling = { -- all of the drug selling config
     }
 }
 
+Drugs.methTable = {
+    tableProp = `v_ret_ml_tableb`,
+    chanceOfExplosion = 100, -- Chance of explosion (in %)
+    chanceToCallCops = 30, -- Chance for table to call police when processing
+}
+
 Drugs.Items = { -- These are the items that are checked when removing/adding items, it's for exploit reasons
     'cocaleaves',
     'joint',

@@ -1,4 +1,3 @@
-# WORK IN PROGRESS
 # QBCore Drug System
 This is a drug system I created for the QBCore Community. It contains the old weed growing system (as there was nothing wrong with that), alongside new drugs such as:
 - Coke
