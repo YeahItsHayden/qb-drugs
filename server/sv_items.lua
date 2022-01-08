@@ -18,6 +18,15 @@ QBCore.Functions.CreateUseableItem("drug_baggy", function(source, item)
 	end
 end)
 
+QBCore.Functions.CreateUseableItem("meth_table", function(source, item)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+
+	if Player.Functions.GetItemByName(item.name) then
+		TriggerClientEvent("qb-drugs:Client:methTableHandling", src)
+	end
+end)
+
 -- This is straight from the QBCore Small Resources section, I just added it into the script as it makes more sense
 
 QBCore.Functions.CreateUseableItem("joint", function(source, item)

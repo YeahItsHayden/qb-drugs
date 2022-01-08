@@ -34,7 +34,6 @@ CreateThread(function()
         Wait(500)
         QBCore.Functions.TriggerCallback("qb-drugs:Server:grabServerConfig", function(cServer)
             config = cServer
-            return config
         end)
     end
 
@@ -190,7 +189,6 @@ CreateThread(function()
         Wait(0)
         QBCore.Functions.TriggerCallback("qb-drugs:Server:grabServerConfig", function(cServer)
             config = cServer
-            return config
         end)
     end
 
@@ -459,6 +457,9 @@ end)
 
 RegisterNetEvent("qb-drugs:Client:methTableHandling", function()
     local continue = false
+    local success = false
+    local nearBench = false
+
     exports['qb-drawtext']:DrawText("Press E to place object","right")            
     while true do
         local mTable = rayPlacement() 
@@ -479,46 +480,65 @@ RegisterNetEvent("qb-drugs:Client:methTableHandling", function()
             end
         end 
     end
-    
-    if continue then -- stuff
-       -- methAnimation()
-        FreezeEntityPosition(PlayerPedId(), true)
-        Skillbar.Start({
-            duration = math.random(2000, 5000),
-            pos = math.random(20, 50),
-            width = math.random(5, 20),
-        }, function() -- succeeded
-            local chance = math.random(1, 100)
 
-            if Drugs.methTable.chanceOfExplosion >= chance then
-                while not RequestScriptAudioBank("BIG_SCORE_GOLD_VAULT_EXPLOSION", 0) do 
-                    Wait(0)
-                    RequestScriptAudioBank("BIG_SCORE_GOLD_VAULT_EXPLOSION", 0)
-                end 
-                PlaySoundFromEntity(-1, "Gold_Vault_Explosions", methTableObject, 'BIG_SCORE_3B_SOUNDS', 1, 1)
-                
-                while not HasNamedPtfxAssetLoaded("core") do -- This don't work :/ 
-                    Wait(0)
-                    RequestNamedPtfxAsset("core")
+    if continue then -- If they place the table
+        entPos = GetEntityCoords(methTableObject)
+        while DoesEntityExist(methTableObject) do 
+            Wait(0)
+            local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(methTableObject))
+
+            if dist < 5 then 
+                nearBench = true
+                DrawText3Ds(entPos.x, entPos.y, entPos.z + 1, "[~r~E~w~] to access bench")  
+                if IsControlJustReleased(0, 38) then 
+                    startMeth = true
+                    break
                 end
-                local particle = StartNetworkedParticleFxLoopedOnEntity("exp_grd_petrol_pump", methTableObject, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0), 1.0, vec3(0.0, 0.0, 0.0))
-                SetParticleFxLoopedEvolution(particle, "core", 0.0, 0) -- No work
-                SetEntityAsNoLongerNeeded(methTableObject)
-                DeleteObject(methTableObject)
-                SetEntityHealth(PlayerPedId(), 1)
-                ExplodePedHead(PlayerPedId())
-                QBCore.Functions.Notify("The processing failed and you exploded, have fun explaining this to EMS", "error")
-                FreezeEntityPosition(PlayerPedId(), false)
-            else     
-                ClearPedTasks(ply)
-                TriggerServerEvent("qb-drugs:Server:methTableHandling")
-                QBCore.Functions.Notify("Successfully processed leaves into pure coke", "success")
-                FreezeEntityPosition(PlayerPedId(), false)
+            else
+                nearBench = false
+            end 
+            if not nearBench then 
+                Wait(1000)
+            end 
+
+            if not DoesEntityExist(methTableObject) then 
+                break 
             end
-        end, function() -- failed
-            ClearPedTasks(ply)
-            QBCore.Functions.Notify("You failed the processing, some of your leaves were destroyed in the process", "error")
-        end)
+        end
+
+        if startMeth then -- If they press E
+            FreezeEntityPosition(PlayerPedId(), true)
+            Skillbar.Start({
+                duration = math.random(2000, 5000),
+                pos = math.random(20, 50),
+                width = math.random(5, 20),
+            }, function() -- succeeded
+                local chance = math.random(1, 100)
+                local success = true
+                if Drugs.methTable.chanceOfExplosion >= chance then
+                    while not RequestScriptAudioBank("BIG_SCORE_GOLD_VAULT_EXPLOSION", 0) do 
+                        Wait(0)
+                        RequestScriptAudioBank("BIG_SCORE_GOLD_VAULT_EXPLOSION", 0)
+                    end 
+                    PlaySoundFromEntity(-1, "Gold_Vault_Explosions", methTableObject, 'BIG_SCORE_3B_SOUNDS', 1, 1)
+                    SetModelAsNoLongerNeeded(methTableObject)
+                    DeleteObject(methTableObject)
+                    SetEntityHealth(PlayerPedId(), 1)
+                    ExplodePedHead(PlayerPedId())
+                    QBCore.Functions.Notify("The processing failed and you exploded, have fun explaining this to EMS", "error")
+                    FreezeEntityPosition(PlayerPedId(), false)
+                else     
+                    TriggerServerEvent("qb-drugs:Server:methTableHandling", continue, success)
+                    QBCore.Functions.Notify("Successfully processed meth", "success")
+                    FreezeEntityPosition(PlayerPedId(), false)
+                end
+            end, function() -- failed
+                local success = false
+                ClearPedTasks(ply)
+                FreezeEntityPosition(PlayerPedId(), false)
+                QBCore.Functions.Notify("You failed the processing, some of your leaves were destroyed in the process", "error")
+            end)
+        end
     end
 end)
 

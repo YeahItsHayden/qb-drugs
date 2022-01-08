@@ -44,9 +44,9 @@ QBCore.Functions.CreateCallback("qb-drugs:Server:checkCooldownStatus", function(
     cb(cooldown)
 end)
 
---/* ------ *\--
---/* Events *\--
---/* ------ *\-- 
+---------------------
+---- /* Events *\ ---
+--------------------- 
 RegisterNetEvent("qb-drugs:Server:itemHandling", function(action, item, amount) -- Item Handling
     local src = source 
     local Player = QBCore.Functions.GetPlayer(src)
@@ -130,6 +130,13 @@ RegisterNetEvent("qb-drugs:Server:handleDrugSales", function(canSell, drug, zone
             -- Call Police
         end
     end
+end)
+
+RegisterNetEvent("qb-drugs:Server:methTableHandling", function(cont, success)
+    if not cont or not success then return end
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.AddItem('methbaggy', 1)
 end)
 
 RegisterNetEvent("qb-drugs:Server:checkDrugsPlayer", function(drug, drugType) -- Check if player has drugs to sell

@@ -1,4 +1,3 @@
-# WORK IN PROGRESS
 # QBCore Drug System
 This is a drug system I created for the QBCore Community. It contains the old weed growing system (as there was nothing wrong with that), alongside new drugs such as:
 - Coke
@@ -17,6 +16,8 @@ This is a drug system I created for the QBCore Community. It contains the old we
 ['purecoke'] 				 	 = {['name'] = 'purecoke',					['label'] = 'Pure Coke',				['weight'] = 0,			['type'] = 'item',		['image'] = '',							['unique'] = false,		['useable'] = false,		['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'You should probably bag these'},
 ['drug_baggy'] 				 	 = {['name'] = 'drug_baggy',					['label'] = 'Drug Bag',				['weight'] = 0,			['type'] = 'item',		['image'] = '',							['unique'] = false,		['useable'] = false,		['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'A small drug bag, perfect for pure coke'},
 ['meth_table'] 				 	 = {['name'] = 'meth_table',					['label'] = 'Meth Table',				['weight'] = 0,			['type'] = 'item',		['image'] = '',							['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'A very cool meth table'},
+['puremeth'] 					 = {['name'] = 'puremeth', 						['label'] = 'Pure Meth', 				['weight'] = 5, 		['type'] = 'item', 		['image'] = '', 			['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,    ['combinable'] = nil,   ['description'] = 'Pure Meth, maybe a table might help you with this'},
+
 ```
 
 ## Features 
