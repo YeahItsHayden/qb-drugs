@@ -20,6 +20,42 @@ This is a drug system I created for the QBCore Community. It contains the old we
 
 ```
 
+3) Add the following to your qb-core > Server > Player.lua class
+```
+    if PlayerData.metadata['druglevel'] ~= nil then -- Drug levels 
+		PlayerData.metadata['druglevel'] = {
+			['coke'] = PlayerData.metadata['druglevel']['coke'] or 0,
+			['meth'] = PlayerData.metadata['druglevel']['meth'] or 0,
+			['oxy'] = PlayerData.metadata['druglevel']['oxy'] or 0,
+			['opium'] = PlayerData.metadata['druglevel']['opium'] or 0,
+		}
+	else
+		PlayerData.metadata['druglevel'] = {
+			['coke'] = 0,
+			['meth'] = 0,
+			['oxy'] = 0,
+			['opium'] = 0,
+		}
+	end
+
+    PlayerData.metadata['addiction'] = PlayerData.metadata['addiction'] or 0 -- addiction levels
+
+    if PlayerData.metadata['xpSystem'] ~= nil then -- XP System 
+		PlayerData.metadata['xpSystem'] = {
+			['coke'] = PlayerData.metadata['xpSystem']['coke'] or 0,
+			['meth'] = PlayerData.metadata['xpSystem']['meth'] or 0,
+			['oxy'] = PlayerData.metadata['xpSystem']['oxy'] or 0,
+			['opium'] = PlayerData.metadata['xpSystem']['opium'] or 0,
+		}
+	else
+		PlayerData.metadata['xpSystem'] = {
+			['coke'] = 0,
+			['meth'] = 0,
+			['oxy'] = 0,
+			['opium'] = 0,
+		}
+	end
+```
 ## Features 
 Missions:
     - An NPC is spawned on Cayo Perico when you enter the island. If you find this NPC you can then start a drug mission with complete configurable locations. 

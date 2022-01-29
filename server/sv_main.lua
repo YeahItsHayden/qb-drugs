@@ -1,8 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject() -- Core
 
---/* --------- *\--
---/* Callbacks *\--
---/* --------- *\-- 
+-- Callbacks 
 QBCore.Functions.CreateCallback("qb-drugs:Server:canStartMission", function(source, cb, price) -- Checks if player has enough money to start the mission
     local src = source 
     local Player = QBCore.Functions.GetPlayer(src)
@@ -44,9 +42,7 @@ QBCore.Functions.CreateCallback("qb-drugs:Server:checkCooldownStatus", function(
     cb(cooldown)
 end)
 
----------------------
----- /* Events *\ ---
---------------------- 
+-- Events
 RegisterNetEvent("qb-drugs:Server:itemHandling", function(action, item, amount) -- Item Handling
     local src = source 
     local Player = QBCore.Functions.GetPlayer(src)
@@ -137,6 +133,16 @@ RegisterNetEvent("qb-drugs:Server:methTableHandling", function(cont, success)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     Player.Functions.AddItem('methbaggy', 1)
+end)
+
+RegisterNetEvent("qb-drugs:Server:callPolice", function(reason, coords)
+    local alertData = {
+        title = "10-28 | Drug Call",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = "Drug Processing has been reported in the area"
+    }
+    TriggerClientEvent("qb-drugs:Client:callPolice", -1, reason, coords)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 end)
 
 RegisterNetEvent("qb-drugs:Server:checkDrugsPlayer", function(drug, drugType) -- Check if player has drugs to sell

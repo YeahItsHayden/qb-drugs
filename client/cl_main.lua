@@ -527,7 +527,11 @@ RegisterNetEvent("qb-drugs:Client:methTableHandling", function()
                     ExplodePedHead(PlayerPedId())
                     QBCore.Functions.Notify("The processing failed and you exploded, have fun explaining this to EMS", "error")
                     FreezeEntityPosition(PlayerPedId(), false)
-                else     
+                else if Drugs.methTable.chanceToCallCops >= chance then
+                    local reason = "Meth Processing has been reported in the area"
+                    local coords = GetEntityCoords(PlayerPedId())
+                    TriggerServerEvent("qb-drugs:Server:callPolice", reason, coords)
+                else 
                     TriggerServerEvent("qb-drugs:Server:methTableHandling", continue, success)
                     QBCore.Functions.Notify("Successfully processed meth", "success")
                     FreezeEntityPosition(PlayerPedId(), false)
@@ -538,6 +542,32 @@ RegisterNetEvent("qb-drugs:Client:methTableHandling", function()
                 FreezeEntityPosition(PlayerPedId(), false)
                 QBCore.Functions.Notify("You failed the processing, some of your leaves were destroyed in the process", "error")
             end)
+        end
+    end
+end)
+
+RegisterNetEvent("qb-drugs:Client:callPolice", function(reason, coords)
+    if PlayerJob == "police" then 
+        local time = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        SetBlipSprite(blip, 458)
+        SetBlipColour(blip, 1)
+        SetBlipDisplay(blip, 4)
+        SetBlipAlpha(blip, transG)
+        SetBlipScale(blip, 1.0)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("10-28 | Reported Drug Processing")
+        EndTextCommandSetBlipName(blip)
+        while time ~= 0 do
+            Wait(180 * 4)
+            time = time - 1
+            SetBlipAlpha(blip, time)
+            if time == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
         end
     end
 end)
