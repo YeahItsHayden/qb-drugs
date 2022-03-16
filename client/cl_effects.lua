@@ -17,11 +17,6 @@ function loadAnimDict(dict)
     end
 end
 
-function EquipParachuteAnim()
-    loadAnimDict("clothingshirt")        
-    TaskPlayAnim(PlayerPedId(), "clothingshirt", "try_shirt_positive_d", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
-end
-
 function HealOxy()
     if not healing then
         healing = true
